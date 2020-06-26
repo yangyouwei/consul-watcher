@@ -51,6 +51,5 @@ func Run(p string,router *mux.Router)  {
 func apiroute(r *mux.Router)  {
 	s := r.PathPrefix("/api").Subrouter()
 	//sub api
-	s.HandleFunc("/dosmoething0", api.DoSmoeThing)
-	s.HandleFunc("/dosmoething1", api.DoSmoeThing)
+	s.HandleFunc("/innotify", api.PostFromConsul)
 }

@@ -1,34 +1,31 @@
 package api
 
 import (
+	"github.com/yangyouwei/consul-watcher/loglib"
+	"github.com/yangyouwei/consul-watcher/publiclib"
+	"io/ioutil"
 	"net/http"
 )
 
-//type UserInfo struct {
-//	Name    string `json:"name"`
-//	Age     int    `json:"age"`
-//	Address string `json:"address"`
-//}
-//
-//var Users = make(map[string]UserInfo)
+func PostFromConsul(w http.ResponseWriter, r *http.Request) {
+		res, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			loglib.Mylog.Println(err)
+			return
+		}
+	service,err := publiclib.GetRes(string(res))
 
-func DoSmoeThing(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world~!"))
+	if service.Name == "" {
+		loglib.Mylog.Println("decode consul post json erro")
+		w.Write([]byte("decode consul post json error"))
+		return
+	}
+
+	w.Write([]byte("ok"))
+
+	//生成配置文件
+	publiclib.GenConf(service)
+	//curl dyups api
+	publiclib.PostUps(service)
 }
 
-//read post json
-//func SETUserInfo_bodyjson(w http.ResponseWriter, r *http.Request) {
-//	userjson, err := ioutil.ReadAll(r.Body)
-//	if err != nil {
-//		fmt.Println(err)
-//		return
-//	}
-//	auser := UserInfo{}
-//	// 将json数据解析到结构体实例中
-//	err = json.Unmarshal(userjson, &auser)
-//	if err != nil {
-//		fmt.Println(err)
-//	}
-//	Users[auser.Name] = auser
-//	w.Write([]byte("user set is ok"))
-//}

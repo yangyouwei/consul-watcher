@@ -13,6 +13,14 @@ type MainConf struct {
 	LogFileDir string
 }
 
+type UpsConf struct {
+	 Upstpl string
+	 UpstreamPath string
+	 DyupsUrl string
+}
+
+var Upsconf UpsConf
+
 var Mainconf MainConf
 
 func InitConf(s *string)  {
@@ -28,7 +36,8 @@ func InitConf(s *string)  {
 		log.Panic(err)
 	}
 	Mainconf.GETCONF(cfg)
-	log.Println("config init success.")
+	Upsconf.GETCONF(cfg)
+	fmt.Println("config init success.")
 }
 
 func (m *MainConf)GETCONF(cfg *goconfig.ConfigFile)  {
@@ -44,6 +53,23 @@ func (m *MainConf)GETCONF(cfg *goconfig.ConfigFile)  {
 			m.LogBool = stringtobool(v)
 		case "log_file_dir":
 			m.LogFileDir = v
+		}
+	}
+}
+
+func (u *UpsConf)GETCONF(cfg *goconfig.ConfigFile)  {
+	key, err := cfg.GetSection("ups")
+	if err != nil {
+		log.Panic(err)
+	}
+	for k, v := range key {
+		switch k {
+		case "tpl_path":
+			u.Upstpl = v
+		case "upstream_path":
+			u.UpstreamPath = v
+		case "dyups_url":
+			u.DyupsUrl = v
 		}
 	}
 }
