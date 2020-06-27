@@ -3,7 +3,7 @@
 ### 简介
 
     本程序接收consul watch 监控到的变化（服务--json）
-    解析json，使用go的模板库。修改nginx upstream配置文件。
+    解析json，提取服务后端主机的ip和端口，使用go的模板库。修改nginx upstream配置文件。
     调用dyups的http接口，修改nginx 内存中的upstream的配置，不用重启nginx
 
 使用环境

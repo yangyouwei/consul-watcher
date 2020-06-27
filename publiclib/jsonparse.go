@@ -39,7 +39,6 @@ func GetRes(jsonstr string ) (*Service,error) {
 		addr := gjson.Get(jsonstr,fmt.Sprint(i)+".Service.Address")
 		port := gjson.Get(jsonstr,fmt.Sprint(i)+".Service.Port")
 		name := gjson.Get(jsonstr,fmt.Sprint(i)+".Service.Service")
-		fmt.Println(addr,port,name)
 		if fmt.Sprint(name) == "Null" {
 			loglib.Mylog.Println("parse json error")
 			var val error = errors.New("parse json error")
