@@ -19,6 +19,8 @@ type UpsConf struct {
 	 DyupsUrl string
 }
 
+var Dingding string
+
 var Upsconf UpsConf
 
 var Mainconf MainConf
@@ -37,6 +39,7 @@ func InitConf(s *string)  {
 	}
 	Mainconf.GETCONF(cfg)
 	Upsconf.GETCONF(cfg)
+	getdingding(cfg)
 	fmt.Println("config init success.")
 }
 
@@ -70,6 +73,19 @@ func (u *UpsConf)GETCONF(cfg *goconfig.ConfigFile)  {
 			u.UpstreamPath = v
 		case "dyups_url":
 			u.DyupsUrl = v
+		}
+	}
+}
+
+func getdingding(cfg *goconfig.ConfigFile)  {
+	key, err := cfg.GetSection("dingding")
+	if err != nil {
+		log.Panic(err)
+	}
+	for k, v := range key {
+		switch k {
+		case "token_url":
+			Dingding = v
 		}
 	}
 }

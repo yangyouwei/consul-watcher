@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+var servicech = make(chan *publiclib.Service)
+
 func PostFromConsul(w http.ResponseWriter, r *http.Request) {
 		res, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -21,11 +23,21 @@ func PostFromConsul(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("ok"))
+	servicech <- service
 
-	//生成配置文件
-	publiclib.GenConf(service)
-	//curl dyups api
-	publiclib.PostUps(service)
+	w.Write([]byte("ok"))
+	////生成配置文件
+	//publiclib.GenConf(service)
+	////curl dyups api
+	//publiclib.PostUps(service)
+}
+
+func ReceiveService()  {
+	for  {
+		a :=<- servicech
+		publiclib.GenConf(a)
+		publiclib.PostUps(a)
+		publiclib.POSTMgToDingding(a)
+	}
 }
 

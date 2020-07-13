@@ -8,10 +8,9 @@ import (
 	"strings"
 )
 
+
 func PostUps(s *Service)  {
 	url := conflib.Upsconf.DyupsUrl+s.Name
-	//fmt.Println(url)
-	//fmt.Println(s)
 	responestr := ""
 	for _,addr_port := range s.Servers{
 		a := "server "+addr_port.Addr+":"+addr_port.Port+";"
@@ -32,5 +31,5 @@ func PostUps(s *Service)  {
 		loglib.Mylog.Println("curl dyups, add server fail.")
 		return
 	}
-	loglib.Mylog.Println("dyups repone: ",string(body))
+	loglib.Mylog.Println("dyups respone: ",string(body))
 }

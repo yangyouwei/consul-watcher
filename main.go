@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/yangyouwei/consul-watcher/api"
 	"github.com/yangyouwei/consul-watcher/conflib"
 	"github.com/yangyouwei/consul-watcher/loglib"
 	"github.com/yangyouwei/consul-watcher/router"
@@ -19,9 +20,7 @@ func init()  {
 	loglib.InitLog()
 }
 
-//defaut listen 8000
-//test url  http://127.0.0.1:8000/api/dosmoething0
-
 func main()  {
+	go api.ReceiveService()
 	router.InitRouter()
 }
